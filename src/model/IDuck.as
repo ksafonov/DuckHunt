@@ -1,7 +1,6 @@
 package model {
     import flash.geom.Point;
 
-    import mx.controls.Image;
     import mx.core.BitmapAsset;
 
     public interface IDuck {
@@ -9,7 +8,7 @@ package model {
         /**
          * @return an image to show for the duck currently
          */
-        function get currentImage():Class;
+        function get currentImage():BitmapAsset;
 
         /**
          * @return current duck location relative to the top-left corner of the playground

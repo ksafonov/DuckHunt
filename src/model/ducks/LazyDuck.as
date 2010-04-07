@@ -3,6 +3,8 @@ package model.ducks {
 
     import model.BaseDuck;
 
+    import mx.core.BitmapAsset;
+
     public class LazyDuck extends BaseDuck {
 
         [Embed(source="/lazyDuck/frame1.png")]
@@ -24,18 +26,18 @@ package model.ducks {
 
         public function LazyDuck(initialLocation:Point) {
             super(initialLocation);
-            _frames = [imgCls1, imgCls2, imgCls3];
+            _frames = [new imgCls1(), new imgCls2(), new imgCls3()];
         }
 
 
         override public function advance():void {
-            location.offset(5, 8);
+            location.offset(5, 0);
             if (++_currentFrame >= _frames.length) {
                 _currentFrame = 0;
             }
         }
 
-        override public function get currentImage():Class {
+        override public function get currentImage():BitmapAsset {
             return _frames[_currentFrame];
         }
     }

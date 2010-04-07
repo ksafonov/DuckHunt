@@ -1,8 +1,9 @@
 package view {
+    import flash.display.Bitmap;
+
     import model.IDuck;
 
     import mx.controls.Image;
-    import mx.core.BitmapAsset;
 
     public class DuckShape extends Image {
         private var _duck:IDuck;
@@ -14,7 +15,7 @@ package view {
         public function update():void {
             x = _duck.location.x;
             y = _duck.location.y;
-            source = new _duck.currentImage();
+            source = new Bitmap(_duck.currentImage.bitmapData);
         }
     }
 }

@@ -1,7 +1,6 @@
 package model {
     import flash.geom.Point;
 
-    import mx.controls.Image;
     import mx.core.BitmapAsset;
 
     public class BaseDuck implements IDuck {
@@ -11,7 +10,7 @@ package model {
             location = initialLocation;
         }
 
-        public function get currentImage():Class {
+        public function get currentImage():BitmapAsset {
             return null;
         }
 
