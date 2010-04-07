@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" creationComplete="start();">
+    <mx:Style source="default.css"/>
+    <mx:Canvas id="playground" styleName="playground" width="100%" height="100%" clipContent="false"/>
+
+    <mx:Script><![CDATA[
+        import model.IDuck;
+        import model.ducks.LazyDuck;
+
+        import view.DuckShape;
+
+        private var _duckShape:DuckShape;
+        private var _duck:IDuck;
+
+        private function start():void {
+            _duck = new LazyDuck(new Point(10, 10));
+            _duckShape = new DuckShape(_duck);
+            playground.addChild(_duckShape);
+
+            var timer:Timer = new Timer(50);
+            timer.addEventListener(TimerEvent.TIMER, doMove);
+            timer.start();
+        }
+
+        private function doMove(e:TimerEvent):void {
+            _duck.advance();
+            _duckShape.update();
+        }
+        ]]></mx:Script>
+</mx:Application>
