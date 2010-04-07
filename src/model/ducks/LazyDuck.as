@@ -5,9 +5,13 @@ package model.ducks {
 
     public class LazyDuck extends BaseDuck {
 
-        public static const FLY_SPEED: int = 10;
+        public static const FLY_SPEED: int = 10; // pixels per frame
 
-        public static const DECAY_SPEED: int = 30;
+        public static const PERIOD: int = 50; // frames
+
+        public static const AMPLITUDE: int = 20; // pixels
+
+        public static const FALL_SPEED: int = 30; // pixels per frame
 
         [Embed(source="/lazyDuck/alive1.png")]
         private var imgClsAlive1: Class;
@@ -39,18 +43,17 @@ package model.ducks {
 
         override public function advance(): void {
             if (_hit) {
-                location.offset(0, DECAY_SPEED);
+                location.offset(0, FALL_SPEED);
             } else {
-                location.offset(_leftToRight ? FLY_SPEED : -FLY_SPEED, 0);
-                if (++_currentFrame >= _frames.length) {
-                    _currentFrame = 0;
-                }
+                var verticalOffset: int = AMPLITUDE * (Math.cos(_currentFrame * PERIOD / 2 / Math.PI));
+                location.offset(_leftToRight ? FLY_SPEED : -FLY_SPEED, verticalOffset);
             }
+            _currentFrame++;
             fireChanged();
         }
 
         override public function get currentImage(): BitmapAsset {
-            return _hit ? _hitImg : _frames[_currentFrame];
+            return _hit ? _hitImg : _frames[_currentFrame % _frames.length];
         }
     }
 }
