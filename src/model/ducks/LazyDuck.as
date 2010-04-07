@@ -1,44 +1,56 @@
 package model.ducks {
-    import flash.geom.Point;
-
     import model.BaseDuck;
 
     import mx.core.BitmapAsset;
 
     public class LazyDuck extends BaseDuck {
 
-        [Embed(source="/lazyDuck/frame1.png")]
-        private var imgCls1:Class;
+        public static const FLY_SPEED: int = 10;
 
-        [Embed(source="/lazyDuck/frame2.png")]
-        private var imgCls2:Class;
+        public static const DECAY_SPEED: int = 30;
 
-        [Embed(source="/lazyDuck/frame3.png")]
-        private var imgCls3:Class;
+        [Embed(source="/lazyDuck/alive1.png")]
+        private var imgClsAlive1: Class;
 
-        /**
-         * angle to fly at, relevant to the direction to the center
-         */
-        var _angle:Number;
+        [Embed(source="/lazyDuck/alive2.png")]
+        private var imgClsAlive2: Class;
 
-        var _currentFrame:Number = 0;
-        var _frames:Array;
+        [Embed(source="/lazyDuck/alive3.png")]
+        private var imgClsAlive3: Class;
 
-        public function LazyDuck(initialLocation:Point) {
-            super(initialLocation);
-            _frames = [new imgCls1(), new imgCls2(), new imgCls3()];
+        [Embed(source="/lazyDuck/hit.png")]
+        private var imgClsHit: Class;
+
+        private var _hitImg: BitmapAsset = new imgClsHit();
+
+        private var _currentFrame: Number = 0;
+        private var _frames: Array;
+
+        private var _hit: Boolean;
+
+        public function LazyDuck() {
+            _frames = [new imgClsAlive1(), new imgClsAlive2(), new imgClsAlive3()];
         }
 
+        override public function hit(): void {
+            _hit = true;
+            fireChanged();
+        }
 
-        override public function advance():void {
-            location.offset(5, 0);
-            if (++_currentFrame >= _frames.length) {
-                _currentFrame = 0;
+        override public function advance(): void {
+            if (_hit) {
+                location.offset(0, DECAY_SPEED);
+            } else {
+                location.offset(_leftToRight ? FLY_SPEED : -FLY_SPEED, 0);
+                if (++_currentFrame >= _frames.length) {
+                    _currentFrame = 0;
+                }
             }
+            fireChanged();
         }
 
-        override public function get currentImage():BitmapAsset {
-            return _frames[_currentFrame];
+        override public function get currentImage(): BitmapAsset {
+            return _hit ? _hitImg : _frames[_currentFrame];
         }
     }
 }

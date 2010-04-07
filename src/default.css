@@ -1,3 +1,10 @@
+.application {
+    paddingLeft: 0;
+    paddingRight: 0;
+    paddingTop: 0;
+    paddingBottom: 0;
+}
+
 .playground {
-    /*backgroundColor: green;*/
+    /*backgroundColor: #ffffe0;*/
 }

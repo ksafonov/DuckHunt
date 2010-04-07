@@ -1,38 +1,50 @@
 package model {
+    import flash.events.EventDispatcher;
     import flash.geom.Point;
 
     import mx.core.BitmapAsset;
 
-    public class BaseDuck implements IDuck {
-        protected var _location:Point;
+    public class BaseDuck extends EventDispatcher implements IDuck {
 
-        public function BaseDuck(initialLocation:Point) {
-            location = initialLocation;
-        }
+        protected var _location: Point;
 
-        public function get currentImage():BitmapAsset {
+        private var _dismissed: Boolean;
+        protected var _leftToRight: Boolean;
+
+        public function get currentImage(): BitmapAsset {
             return null;
         }
 
-        public function get location():Point {
+        public function get location(): Point {
             return _location;
         }
 
-        public function set location(p:Point):void {
+        public function set location(p: Point): void {
             _location = p.clone();
         }
 
-        public function advance():void {
+        public function set leftToRight(p: Boolean): void {
+            _leftToRight = p;
+        }
+
+        public function advance(): void {
             // base implementation does nothing
         }
 
-        public function hit():void {
-            // base implementation does nothing
+        public function hit(): void {
+            dismiss();
         }
 
-        public function isAlive():Boolean {
-            // immortal duck by default
-            return true;
+        public function dismiss(): void {
+            _dismissed = true;
+        }
+
+        public function get dismissed(): Boolean {
+            return _dismissed;
+        }
+
+        protected function fireChanged(): void {
+            dispatchEvent(new DuckChangeEvent(this));
         }
     }
 }
