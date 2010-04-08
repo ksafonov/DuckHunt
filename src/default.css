@@ -3,8 +3,25 @@
     paddingRight: 0;
     paddingTop: 0;
     paddingBottom: 0;
+    backgroundColor: white;
 }
 
 .playground {
-    /*backgroundColor: #ffffe0;*/
+    backgroundImage: Embed(source = "/background.png");
+}
+
+.scoreLabel {
+    fontFamily: Arial;
+    fontSize: 12;
+}
+
+.gameOverPanel {
+    backgroundColor: blue;
+}
+
+.gameOverLabel {
+    fontFamily: Arial;
+    fontSize: 16;
+    horizontalAlign: center;
+    verticalAlign: middle;
 }

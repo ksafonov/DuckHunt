@@ -27,5 +27,9 @@
     <option name="GENERATE_NO_WARNINGS" value="true" />
     <option name="DEPRECATION" value="false" />
   </component>
+  <component name="EclipseEmbeddedCompilerSettings">
+    <option name="GENERATE_NO_WARNINGS" value="true" />
+    <option name="DEPRECATION" value="false" />
+  </component>
 </project>
 

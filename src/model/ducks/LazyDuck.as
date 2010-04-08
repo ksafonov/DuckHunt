@@ -9,7 +9,7 @@ package model.ducks {
 
         public static const PERIOD: int = 50; // frames
 
-        public static const AMPLITUDE: int = 20; // pixels
+        public static const AMPLITUDE: int = 10; // pixels
 
         public static const FALL_SPEED: int = 30; // pixels per frame
 
@@ -38,7 +38,7 @@ package model.ducks {
 
         override public function hit(): void {
             _hit = true;
-            fireChanged();
+            fireChanged(true);
         }
 
         override public function advance(): void {
@@ -49,11 +49,15 @@ package model.ducks {
                 location.offset(_leftToRight ? FLY_SPEED : -FLY_SPEED, verticalOffset);
             }
             _currentFrame++;
-            fireChanged();
+            fireChanged(false);
         }
 
         override public function get currentImage(): BitmapAsset {
             return _hit ? _hitImg : _frames[_currentFrame % _frames.length];
+        }
+
+        override public function get points(): int {
+            return 10;
         }
     }
 }

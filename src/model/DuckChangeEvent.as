@@ -7,13 +7,20 @@ package model {
 
         private var _duck:IDuck;
 
-        public function DuckChangeEvent(duck:IDuck) {
+        private var _hitEvent : Boolean;
+
+        public function DuckChangeEvent(duck:IDuck, hitEvent: Boolean) {
             super(NAME);
             _duck = duck;
+            _hitEvent = hitEvent;
         }
 
         public function get duck():IDuck {
             return _duck;
+        }
+
+        public function get hitEvent(): Boolean {
+            return _hitEvent;
         }
     }
 }

@@ -43,8 +43,12 @@ package model {
             return _dismissed;
         }
 
-        protected function fireChanged(): void {
-            dispatchEvent(new DuckChangeEvent(this));
+        protected function fireChanged(hitEvent: Boolean): void {
+            dispatchEvent(new DuckChangeEvent(this, hitEvent));
+        }
+
+        public function get points(): int {
+            return 0;
         }
     }
 }

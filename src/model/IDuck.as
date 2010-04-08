@@ -46,5 +46,10 @@ package model {
          */
         function dismiss(): void;
 
+        /**
+         * @return points that user gets when hits this duck
+         */
+        function get points(): int;
+
     }
 }

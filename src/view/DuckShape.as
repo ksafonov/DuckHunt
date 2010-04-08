@@ -17,7 +17,7 @@ package view {
         private function update(event: DuckChangeEvent): void {
             if (_duck.dismissed) {
                 // hide this shape
-                parent.removeChild(this);
+//                parent.removeChild(this);
             } else {
                 x = _duck.location.x;
                 y = _duck.location.y;

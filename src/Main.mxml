@@ -2,50 +2,105 @@
 <mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" styleName="application" creationComplete="start();">
     <mx:Style source="default.css"/>
     <mx:Canvas id="playground" styleName="playground" width="100%" height="100%" clipContent="false"/>
+    <mx:Label id="_scoreLabel" styleName="scoreLabel"/>
 
     <mx:Script><![CDATA[
         import model.IDuck;
         import model.PlayModel;
+        import model.ScoreChangeEvent;
+
+        import mx.containers.Panel;
 
         import view.DuckShape;
 
-        public static const ADVANCE_DELAY: int = 50; // ms
-        public static const NEW_DUCK_DELAY: int = 2000; // ms
+        public static const ADVANCE_DELAY:int = 50; // ms
+        public static const NEW_DUCK_DELAY:int = 2000; // ms
+        public static const PLAY_TIME:int = 60 * 1000; // ms
 
-        private var _model: PlayModel;
+        private var _model:PlayModel;
+        private var _startTime:Number;
+        private var _advanceTimer:Timer;
+        private var _newDuckTimer:Timer;
 
-        private function start(): void {
+
+        [Embed(source="/cursor.png")]
+        private var cursorClass: Class;
+
+        private function start():void {
+            cursorManager.setCursor(cursorClass);
+
             _model = new PlayModel(visibleAreaProvider);
 
-            var advanceTimer: Timer = new Timer(ADVANCE_DELAY);
-            advanceTimer.addEventListener(TimerEvent.TIMER, function(e: TimerEvent) {
+            _model.addEventListener(ScoreChangeEvent.NAME, function(event:ScoreChangeEvent) {
+                updateScore();
+            });
+
+            addEventListener(MouseEvent.MOUSE_DOWN, miss);
+
+            _advanceTimer = new Timer(ADVANCE_DELAY);
+            _advanceTimer.addEventListener(TimerEvent.TIMER, function(e:TimerEvent) {
+                var currentTime:Number = new Date().getTime();
+                if (currentTime - _startTime > PLAY_TIME) {
+                    gameOver();
+                }
                 _model.advanceAllDucks();
             });
-            advanceTimer.start();
 
-            var newDuckTimer: Timer = new Timer(NEW_DUCK_DELAY);
-            newDuckTimer.addEventListener(TimerEvent.TIMER, function(e: TimerEvent) {
+            _newDuckTimer = new Timer(NEW_DUCK_DELAY);
+            _newDuckTimer.addEventListener(TimerEvent.TIMER, function(e:TimerEvent) {
                 newDuck();
             });
-            newDuckTimer.start();
+
+            updateScore();
 
             newDuck();
+            _advanceTimer.start();
+            _newDuckTimer.start();
+
+            _startTime = new Date().getTime();
         }
 
-        private function visibleAreaProvider(): Rectangle {
+        private function gameOver():void {
+            _advanceTimer.stop();
+            _newDuckTimer.stop();
+
+            var panel:Panel = new Panel();
+            panel.styleName = "gameOverPanel";
+            playground.addChild(panel);
+
+            var label:Label = new Label();
+            label.text = "Game over! Your score: " + _model.score;
+            label.styleName = "gameOverLabel";
+            playground.addChild(label);
+//            label.left = 0;
+//            label.right = 0;
+//            label.top = 0;
+//            label.bottom = 0;
+        }
+
+        private function miss(event:MouseEvent):void {
+            _model.miss();
+        }
+
+        private function visibleAreaProvider():Rectangle {
             return new Rectangle(0, 0, playground.width, playground.height);
         }
 
-        private function newDuck(): void {
-            var duck: IDuck = _model.createNewDuck();
-            var shape: DuckShape = new DuckShape(duck);
+        private function newDuck():void {
+            var duck:IDuck = _model.createNewDuck();
+            var shape:DuckShape = new DuckShape(duck);
             shape.addEventListener(MouseEvent.MOUSE_DOWN, hit);
             playground.addChild(shape);
         }
 
-        private function hit(event: MouseEvent): void {
-            var duckShape: DuckShape = DuckShape(event.target);
+        private function hit(event:MouseEvent):void {
+            event.stopPropagation();
+            var duckShape:DuckShape = DuckShape(event.target);
             duckShape.hit();
+        }
+
+        private function updateScore():void {
+            _scoreLabel.text = "Score: " + _model.score;
         }
 
         ]]></mx:Script>
