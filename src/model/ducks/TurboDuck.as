@@ -1,11 +1,11 @@
 package model.ducks {
-import model.BaseDuck;
+import flash.geom.Point;
 
-import mx.core.BitmapAsset;
+import model.BaseDuck;
 
 public class TurboDuck extends BaseDuck {
 
-    public static const FLY_SPEED: int = 40; // pixels per frame
+    public static const HORIZONTAL_SPEED: int = 40; // pixels per frame
 
     public static const VERTICAL_SPEED: int = 60; // pixels per frame
 
@@ -23,41 +23,19 @@ public class TurboDuck extends BaseDuck {
     [Embed(source="/turboDuck/hit.png")]
     private var imgClsHit: Class;
 
-    private var _hitImg: BitmapAsset = new imgClsHit();
-
-    private var _currentFrame: int = 0;
-    private var _frames: Array;
-
-    private var _hit: Boolean;
-
     private var _verticalSpeed: int;
 
     public function TurboDuck() {
-        _frames = [new imgClsAlive1(), new imgClsAlive2(), new imgClsAlive3()];
+        super(new Array(new imgClsAlive1(), new imgClsAlive2(), new imgClsAlive3()), new Array(new imgClsHit()));
         _verticalSpeed = (Math.random() - 0.5) * VERTICAL_SPEED;
     }
 
-    override public function hit(): void {
-        _hit = true;
-        fireChanged(true);
-    }
-
-    override public function advance(): void {
-        if (dismissed) {
-            return;
-        }
-
+    override protected function move(hit: Boolean): Point {
         if (_hit) {
-            location.offset(0, FALL_SPEED);
+            return new Point(0, FALL_SPEED);
         } else {
-            location.offset(_leftToRight ? FLY_SPEED : -FLY_SPEED, _verticalSpeed);
+            return new Point(_leftToRight ? HORIZONTAL_SPEED : -HORIZONTAL_SPEED, _verticalSpeed);
         }
-        _currentFrame++;
-        fireChanged(false);
-    }
-
-    override public function get currentImage(): BitmapAsset {
-        return _hit ? _hitImg : _frames[_currentFrame % _frames.length];
     }
 
     override public function get points(): int {

@@ -1,7 +1,7 @@
 package model.ducks {
-import model.BaseDuck;
+import flash.geom.Point;
 
-import mx.core.BitmapAsset;
+import model.BaseDuck;
 
 public class LazyDuck extends BaseDuck {
 
@@ -25,39 +25,24 @@ public class LazyDuck extends BaseDuck {
     [Embed(source="/lazyDuck/hit.png")]
     private var imgClsHit: Class;
 
-    private var _hitImg: BitmapAsset = new imgClsHit();
-
-    private var _currentFrame: int = 0;
-    private var _frames: Array;
-
-    private var _hit: Boolean;
+    private var _counter: int = 0;
 
     public function LazyDuck() {
-        _frames = [new imgClsAlive1(), new imgClsAlive2(), new imgClsAlive3()];
-    }
-
-    override public function hit(): void {
-        _hit = true;
-        fireChanged(true);
+        super(new Array(new imgClsAlive1(), new imgClsAlive2(), new imgClsAlive3()), new Array(new imgClsHit()));
     }
 
     override public function advance(): void {
-        if (dismissed) {
-            return;
-        }
-
-        if (_hit) {
-            location.offset(0, FALL_SPEED);
-        } else {
-            var verticalOffset: int = AMPLITUDE * (Math.cos(_currentFrame * PERIOD / 2 / Math.PI));
-            location.offset(_leftToRight ? FLY_SPEED : -FLY_SPEED, verticalOffset);
-        }
-        _currentFrame++;
-        fireChanged(false);
+        super.advance();
+        _counter++;
     }
 
-    override public function get currentImage(): BitmapAsset {
-        return _hit ? _hitImg : _frames[_currentFrame % _frames.length];
+    override protected function move(hit: Boolean): Point {
+        if (_hit) {
+            return new Point(0, FALL_SPEED);
+        } else {
+            var verticalOffset: int = AMPLITUDE * (Math.cos(_counter * PERIOD / 2 / Math.PI));
+            return new Point(_leftToRight ? FLY_SPEED : -FLY_SPEED, verticalOffset);
+        }
     }
 
     override public function get points(): int {

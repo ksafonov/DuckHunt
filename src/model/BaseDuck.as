@@ -8,11 +8,19 @@ public class BaseDuck extends EventDispatcher implements IDuck {
 
     protected var _location: Point = new Point(0, 0);
 
+    protected var _hit: Boolean;
     private var _dismissed: Boolean;
     protected var _leftToRight: Boolean;
+    private var _aliveFrames: FrameList;
+    private var _hitFrames: FrameList;
+
+    public function BaseDuck(aliveFrames: Array, hitFrames: Array) {
+        _aliveFrames = new FrameList(aliveFrames);
+        _hitFrames = new FrameList(hitFrames);
+    }
 
     public function get currentImage(): BitmapAsset {
-        return null;
+        return _hit ? _hitFrames.image : _aliveFrames.image;
     }
 
     public function get location(): Point {
@@ -32,11 +40,27 @@ public class BaseDuck extends EventDispatcher implements IDuck {
     }
 
     public function advance(): void {
-        // base implementation does nothing
+        if (dismissed) {
+            return;
+        }
+
+        var offset: Point = move(_hit);
+        location.offset(offset.x, offset.y);
+        if (_hit) {
+            _aliveFrames.advance();
+        } else {
+            _hitFrames.advance();
+        }
+        fireChanged(false);
+    }
+
+    protected function move(hit: Boolean): Point {
+        return new Point(0, 0);
     }
 
     public function hit(): void {
-        dismiss();
+        _hit = true;
+        fireChanged(true);
     }
 
     public function dismiss(): void {
