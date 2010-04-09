@@ -3,26 +3,24 @@ import model.BaseDuck;
 
 import mx.core.BitmapAsset;
 
-public class LazyDuck extends BaseDuck {
+public class TurboDuck extends BaseDuck {
 
-    public static const FLY_SPEED: int = 10; // pixels per frame
+    public static const FLY_SPEED: int = 40; // pixels per frame
 
-    public static const PERIOD: int = 50; // frames
-
-    public static const AMPLITUDE: int = 10; // pixels
+    public static const VERTICAL_SPEED: int = 60; // pixels per frame
 
     public static const FALL_SPEED: int = 30; // pixels per frame
 
-    [Embed(source="/lazyDuck/alive1.png")]
+    [Embed(source="/turboDuck/alive1.png")]
     private var imgClsAlive1: Class;
 
-    [Embed(source="/lazyDuck/alive2.png")]
+    [Embed(source="/turboDuck/alive2.png")]
     private var imgClsAlive2: Class;
 
-    [Embed(source="/lazyDuck/alive3.png")]
+    [Embed(source="/turboDuck/alive3.png")]
     private var imgClsAlive3: Class;
 
-    [Embed(source="/lazyDuck/hit.png")]
+    [Embed(source="/turboDuck/hit.png")]
     private var imgClsHit: Class;
 
     private var _hitImg: BitmapAsset = new imgClsHit();
@@ -32,8 +30,11 @@ public class LazyDuck extends BaseDuck {
 
     private var _hit: Boolean;
 
-    public function LazyDuck() {
+    private var _verticalSpeed: int;
+
+    public function TurboDuck() {
         _frames = [new imgClsAlive1(), new imgClsAlive2(), new imgClsAlive3()];
+        _verticalSpeed = (Math.random() - 0.5) * VERTICAL_SPEED;
     }
 
     override public function hit(): void {
@@ -49,8 +50,7 @@ public class LazyDuck extends BaseDuck {
         if (_hit) {
             location.offset(0, FALL_SPEED);
         } else {
-            var verticalOffset: int = AMPLITUDE * (Math.cos(_currentFrame * PERIOD / 2 / Math.PI));
-            location.offset(_leftToRight ? FLY_SPEED : -FLY_SPEED, verticalOffset);
+            location.offset(_leftToRight ? FLY_SPEED : -FLY_SPEED, _verticalSpeed);
         }
         _currentFrame++;
         fireChanged(false);
@@ -61,7 +61,7 @@ public class LazyDuck extends BaseDuck {
     }
 
     override public function get points(): int {
-        return 3;
+        return 10;
     }
 }
 }
