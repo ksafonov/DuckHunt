@@ -1,32 +1,43 @@
 package view {
-    import flash.display.Bitmap;
+import flash.display.Bitmap;
 
-    import model.DuckChangeEvent;
-    import model.IDuck;
+import flash.display.BitmapData;
+import flash.geom.Matrix;
 
-    import mx.controls.Image;
+import model.DuckChangeEvent;
+import model.IDuck;
 
-    public class DuckShape extends Image {
-        private var _duck: IDuck;
+import mx.controls.Image;
 
-        public function DuckShape(duck: IDuck) {
-            _duck = duck;
-            _duck.addEventListener(DuckChangeEvent.NAME, update);
-        }
+public class DuckShape extends Image {
+    private var _duck: IDuck;
 
-        private function update(event: DuckChangeEvent): void {
-            if (_duck.dismissed) {
-                // hide this shape
-                parent.removeChild(this);
-            } else {
-                x = _duck.location.x;
-                y = _duck.location.y;
-                source = new Bitmap(_duck.currentImage.bitmapData);
-            }
-        }
+    public function DuckShape(duck: IDuck) {
+        _duck = duck;
+        _duck.addEventListener(DuckChangeEvent.NAME, update);
 
-        public function hit(): void {
-            _duck.hit();
+        if (_duck.leftToRight) {
+            var matrix: Matrix = transform.matrix;
+            matrix.scale(-1, 1);
+            transform.matrix = matrix;
         }
     }
+
+    private function update(event: DuckChangeEvent): void {
+        if (_duck.dismissed) {
+            // hide this shape
+            parent.removeChild(this);
+        } else {
+            var bitmapData: BitmapData = _duck.currentImage.bitmapData;
+            source = new Bitmap(bitmapData);
+            x = _duck.leftToRight ? _duck.location.x + bitmapData.width : _duck.location.x;
+            y = _duck.location.y;
+
+        }
+    }
+
+    public function hit(): void {
+        _duck.hit();
+    }
+}
 }

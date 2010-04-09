@@ -18,34 +18,39 @@
 
         import mx.controls.Text;
 
+        import mx.core.BitmapAsset;
+
+        import mx.managers.CursorManagerPriority;
+
         import view.DuckShape;
 
-        public static const ADVANCE_DELAY:int = 50; // ms
-        public static const NEW_DUCK_DELAY:int = 2000; // ms
-        public static const PLAY_TIME:int = 60 * 1000; // ms
+        public static const ADVANCE_DELAY: int = 50; // ms
+        public static const NEW_DUCK_DELAY: int = 2000; // ms
+        public static const PLAY_TIME: int = 60 * 1000; // ms
 
-        private var _model:PlayModel;
-        private var _startTime:Number;
-        private var _advanceTimer:Timer;
-        private var _newDuckTimer:Timer;
+        private var _model: PlayModel;
+        private var _startTime: Number;
+        private var _advanceTimer: Timer;
+        private var _newDuckTimer: Timer;
 
 
         [Embed(source="/cursor.png")]
-        private var cursorClass:Class;
+        private var cursorClass: Class;
 
-        private function start():void {
-            cursorManager.setCursor(cursorClass);
+        private function start(): void {
+            var cursorAsset: BitmapAsset = new cursorClass();
+            cursorManager.setCursor(cursorClass, CursorManagerPriority.MEDIUM, -cursorAsset.width / 2, -cursorAsset.height / 2);
 
             _model = new PlayModel(visibleAreaProvider);
 
-            _model.addEventListener(ScoreChangeEvent.NAME, function(event:ScoreChangeEvent):void {
+            _model.addEventListener(ScoreChangeEvent.NAME, function(event: ScoreChangeEvent): void {
                 updateStatistics();
             });
 
             addEventListener(MouseEvent.MOUSE_DOWN, miss);
 
             _advanceTimer = new Timer(ADVANCE_DELAY);
-            _advanceTimer.addEventListener(TimerEvent.TIMER, function(e:TimerEvent):void {
+            _advanceTimer.addEventListener(TimerEvent.TIMER, function(e: TimerEvent): void {
                 if (getTimeLeft() == 0) {
                     gameOver();
                 }
@@ -54,7 +59,7 @@
             });
 
             _newDuckTimer = new Timer(NEW_DUCK_DELAY);
-            _newDuckTimer.addEventListener(TimerEvent.TIMER, function(e:TimerEvent):void {
+            _newDuckTimer.addEventListener(TimerEvent.TIMER, function(e: TimerEvent): void {
                 newDuck();
             });
 
@@ -67,52 +72,50 @@
             _startTime = new Date().getTime();
         }
 
-        private function gameOver():void {
+        private function gameOver(): void {
             _advanceTimer.stop();
             _newDuckTimer.stop();
 
-            var gameOverPanel:Box = new VBox();
+            var gameOverPanel: Box = new VBox();
             gameOverPanel.styleName = "gameOverPanel";
             _playground.addChild(gameOverPanel);
 
-            var label:Text = new Text();
+            var label: Text = new Text();
             label.text = "Game over!\nYour score: " + _model.score;
             label.styleName = "gameOverLabel";
             gameOverPanel.addChild(label);
         }
 
-        private function miss(event:MouseEvent):void {
+        private function miss(event: MouseEvent): void {
             _model.miss();
         }
 
-        private function visibleAreaProvider():Rectangle {
+        private function visibleAreaProvider(): Rectangle {
             return new Rectangle(0, 0, _playground.width, _playground.height);
         }
 
-
-
-        private function newDuck():void {
-            var duck:IDuck = _model.createNewDuck();
-            var shape:DuckShape = new DuckShape(duck);
+        private function newDuck(): void {
+            var duck: IDuck = _model.createNewDuck();
+            var shape: DuckShape = new DuckShape(duck);
             shape.addEventListener(MouseEvent.MOUSE_DOWN, hit);
             _playground.addChild(shape);
         }
 
-        private function hit(event:MouseEvent):void {
+        private function hit(event: MouseEvent): void {
             event.stopPropagation();
-            var duckShape:DuckShape = DuckShape(event.target);
+            var duckShape: DuckShape = DuckShape(event.target);
             duckShape.hit();
         }
 
         /**
          * @return the time left to play, in seconds
          */
-        private function getTimeLeft():int {
-            var currentTime:Number = new Date().getTime();
+        private function getTimeLeft(): int {
+            var currentTime: Number = new Date().getTime();
             return Math.abs((_startTime + PLAY_TIME - currentTime) / 1000);
         }
 
-        private function updateStatistics():void {
+        private function updateStatistics(): void {
             _scoreLabel.text = "Score: " + _model.score;
             _timeLabel.text = "Time: " + getTimeLeft();
         }
