@@ -15,12 +15,6 @@ public class DuckShape extends Image {
     public function DuckShape(duck: IDuck) {
         _duck = duck;
         _duck.addEventListener(DuckChangeEvent.NAME, update);
-
-        if (_duck.leftToRight) {
-            var matrix: Matrix = transform.matrix;
-            matrix.scale(-1, 1);
-            transform.matrix = matrix;
-        }
     }
 
     private function update(event: DuckChangeEvent): void {
@@ -33,6 +27,9 @@ public class DuckShape extends Image {
             x = _duck.leftToRight ? _duck.location.x + bitmapData.width : _duck.location.x;
             y = _duck.location.y;
 
+            var matrix: Matrix = transform.matrix;
+            matrix.a = _duck.leftToRight ? -1 : 1;
+            transform.matrix = matrix;
         }
     }
 
