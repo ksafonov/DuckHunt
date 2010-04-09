@@ -42,7 +42,6 @@ public class PlayModel extends EventDispatcher {
 
     private function duckChanged(event:DuckChangeEvent):void {
         if (event.duck.dismissed) {
-            _ducks.removeItemAt(_ducks.getItemIndex(event.duck));
             return;
         }
 
@@ -55,6 +54,7 @@ public class PlayModel extends EventDispatcher {
         var duckBoundaries:Rectangle = new Rectangle(location.x, location.y, bitmapData.width, bitmapData.height);
         if (!visibleArea.intersects(duckBoundaries)) {
             event.duck.dismiss();
+            _ducks.removeItemAt(_ducks.getItemIndex(event.duck));
         }
     }
 
