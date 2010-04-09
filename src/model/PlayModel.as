@@ -37,6 +37,11 @@ package model {
         }
 
         private function duckChanged(event: DuckChangeEvent): void {
+            if (event.duck.dismissed) {
+                _ducks.removeItemAt(_ducks.getItemIndex(event.duck));
+                return;
+            }
+
             if (event.hitEvent) {
                 _score += event.duck.points;
                 fireScoreChanged();
@@ -46,7 +51,6 @@ package model {
             var duckBoundaries: Rectangle = new Rectangle(location.x, location.y, bitmapData.width, bitmapData.height);
             if (!visibleArea.intersects(duckBoundaries)) {
                 event.duck.dismiss();
-                _ducks.removeItemAt(_ducks.getItemIndex(event.duck));
             }
         }
 

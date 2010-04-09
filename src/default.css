@@ -11,17 +11,33 @@
 }
 
 .scoreLabel {
-    fontFamily: Arial;
-    fontSize: 12;
+    fontSize: 30;
+    fontFamily: arial;
+    bottom: 0;
+    right: 0;
+}
+
+.timeLabel {
+    fontSize: 30;
+    fontFamily: arial;
+    bottom: 0;
+    left: 0;
 }
 
 .gameOverPanel {
-    backgroundColor: blue;
+    backgroundColor: white;
+    backgroundAlpha: 0.7;
+    borderStyle: none;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    verticalAlign: middle;
+    horizontalAlign: center;
 }
 
 .gameOverLabel {
+    fontWeight: bold;
     fontFamily: Arial;
-    fontSize: 16;
-    horizontalAlign: center;
-    verticalAlign: middle;
+    fontSize: 30;
 }

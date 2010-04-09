@@ -42,6 +42,10 @@ package model.ducks {
         }
 
         override public function advance(): void {
+            if (dismissed) {
+                return;
+            }
+            
             if (_hit) {
                 location.offset(0, FALL_SPEED);
             } else {
