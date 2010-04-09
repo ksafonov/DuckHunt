@@ -39,6 +39,13 @@ public class DuckTest {
         });
     }
 
+    [Test]
+    public function testPoints(): void {
+        forEachDuckType(function(duck: IDuck): void {
+            Assert.assertTrue(dump(duck) + " gives no points", duck.points > 0);
+        });
+    }
+
     private static function forEachDuckType(testIt: Function): void {
         for (var i: int = 0; i < DuckFactory.DUCKS_CLASSES.length; i++) {
             var clazz: Class = DuckFactory.DUCKS_CLASSES[i];
