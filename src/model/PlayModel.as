@@ -9,23 +9,27 @@ import mx.collections.IList;
 
 public class PlayModel extends EventDispatcher {
 
-    private var _visibleAreaProvider: Function;
+    private static const MISS_PENALTY: int = 1;
+
+    private var _visibleAreaProviderDelegate: Function;
     private var _ducks: IList = new ArrayList();
     private var _score: int;
 
-    public function PlayModel(visibleArea: Function) {
-        _visibleAreaProvider = visibleArea;
+    public function PlayModel(visibleAreaProviderDelegate: Function) {
+        _visibleAreaProviderDelegate = visibleAreaProviderDelegate;
     }
 
     private function get visibleArea(): Rectangle {
-        return _visibleAreaProvider();
+        return _visibleAreaProviderDelegate();
     }
 
     public function createNewDuck(): IDuck {
         var duck: IDuck = DuckFactory.newDuck();
 
         // visible area extended by duck's size to the left and top
-        var area: Rectangle = new Rectangle(-duck.currentImage.bitmapData.width + 1, 0, visibleArea.width - 1 + duck.currentImage.bitmapData.width, visibleArea.height - duck.currentImage.bitmapData.height);
+        var duckBitmapData: BitmapData = duck.currentImage.bitmapData;
+
+        var area: Rectangle = new Rectangle(-duckBitmapData.width + 1, 0, visibleArea.width - 1 + duckBitmapData.width, visibleArea.height - duckBitmapData.height);
 
         var leftToRight: Boolean = Math.random() >= 0.5;
         duck.leftToRight = leftToRight;
@@ -55,7 +59,7 @@ public class PlayModel extends EventDispatcher {
     }
 
     public function advanceAllDucks(): void {
-        var stableCopy: Array = _ducks.toArray(); // since ducks list may change in duck.advance()
+        var stableCopy: Array = _ducks.toArray(); // since ducks list may change inside duck.advance()
         for each (var duck: IDuck in stableCopy) {
             duck.advance();
         }
@@ -63,7 +67,7 @@ public class PlayModel extends EventDispatcher {
 
     public function miss(): void {
         if (_score > 0) {
-            _score--;
+            _score -= MISS_PENALTY;
             fireScoreChanged();
         }
     }
