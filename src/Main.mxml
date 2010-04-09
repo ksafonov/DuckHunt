@@ -87,7 +87,9 @@
         }
 
         private function miss(event: MouseEvent): void {
-            _model.miss();
+            if (event.target == _playground) {
+                _model.miss();
+            }
         }
 
         private function visibleAreaProvider(): Rectangle {
@@ -97,14 +99,7 @@
         private function newDuck(): void {
             var duck: IDuck = _model.createNewDuck();
             var shape: DuckShape = new DuckShape(duck);
-            shape.addEventListener(MouseEvent.MOUSE_DOWN, hit);
             _playground.addChild(shape);
-        }
-
-        private function hit(event: MouseEvent): void {
-            event.stopPropagation();
-            var duckShape: DuckShape = DuckShape(event.target);
-            duckShape.hit();
         }
 
         /**
