@@ -6,7 +6,7 @@ import mx.core.BitmapAsset;
 
 public class BaseDuck extends EventDispatcher implements IDuck {
 
-    protected var _location: Point;
+    protected var _location: Point = new Point(0, 0);
 
     private var _dismissed: Boolean;
     protected var _leftToRight: Boolean;
