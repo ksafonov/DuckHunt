@@ -3,7 +3,7 @@ import flash.geom.Point;
 
 import model.BaseDuck;
 
-public class TurboDuck extends BaseDuck {
+public class QuickDuck extends BaseDuck {
 
     public static const HORIZONTAL_SPEED: int = 40; // pixels per frame
 
@@ -25,7 +25,7 @@ public class TurboDuck extends BaseDuck {
 
     private var _verticalSpeed: int;
 
-    public function TurboDuck() {
+    public function QuickDuck() {
         super(new Array(new imgClsAlive1(), new imgClsAlive2(), new imgClsAlive3()), new Array(new imgClsHit()));
         _verticalSpeed = (Math.random() - 0.5) * VERTICAL_SPEED;
     }
