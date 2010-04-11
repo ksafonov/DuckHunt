@@ -1,15 +1,3 @@
-.application {
-    paddingLeft: 0;
-    paddingRight: 0;
-    paddingTop: 0;
-    paddingBottom: 0;
-    backgroundColor: white;
-}
-
-.playground {
-    backgroundImage: Embed(source = "/background.png");
-}
-
 .scoreLabel {
     fontSize: 30;
     fontFamily: arial;

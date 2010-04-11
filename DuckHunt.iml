@@ -4,7 +4,7 @@
     <option name="DO_BUILD" value="true" />
     <option name="MAIN_CLASS" value="Main" />
     <option name="OUTPUT_FILE_NAME" value="DuckHunt.swf" />
-    <option name="TARGET_PLAYER_VERSION" value="9.0.124" />
+    <option name="TARGET_PLAYER_VERSION" value="10.0.0" />
     <option name="VERSION" value="3" />
   </component>
   <component name="NewModuleRootManager" inherit-compiler-output="true">
@@ -14,7 +14,7 @@
       <sourceFolder url="file://$MODULE_DIR$/images" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" />
     </content>
-    <orderEntry type="jdk" jdkName="flex_sdk_3.5.0.12683 (player 9)" jdkType="Flex SDK Type" />
+    <orderEntry type="jdk" jdkName="flex_sdk_4.0.0.14159 (player 10)" jdkType="Flex SDK Type" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module-library">
       <library>

@@ -7,27 +7,29 @@ import flash.geom.Matrix;
 import model.DuckChangeEvent;
 import model.IDuck;
 
-import mx.containers.Box;
-import mx.controls.Image;
+import mx.core.IVisualElementContainer;
 
-public class DuckShape extends Box {
+import spark.components.Group;
+import spark.primitives.BitmapImage;
+
+public class DuckShape extends Group {
     private var _duck: IDuck;
-    private var _image: Image;
+    private var _image: BitmapImage;
 
     public function DuckShape(duck: IDuck) {
         _duck = duck;
         _duck.addEventListener(DuckChangeEvent.NAME, update);
 
-        _image = new Image();
-        addChild(_image);
+        _image = new BitmapImage();
+        addElement(_image);
 
-        _image.addEventListener(MouseEvent.MOUSE_DOWN, hit);
+        addEventListener(MouseEvent.MOUSE_DOWN, hit);
     }
 
     private function update(event: DuckChangeEvent): void {
         if (_duck.dismissed) {
             // hide this shape
-            parent.removeChild(this);
+            (parent as IVisualElementContainer).removeElement(this);
         } else {
             var bitmapData: BitmapData = _duck.currentImage.bitmapData;
             _image.source = new Bitmap(bitmapData);

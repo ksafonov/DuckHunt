@@ -1,26 +1,25 @@
 <?xml version="1.0"?>
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" styleName="application" creationComplete="start();">
-    <mx:Style source="default.css"/>
-    <mx:Canvas id="_playground" styleName="playground" width="100%" height="100%" clipContent="false">
-        <mx:Label id="_scoreLabel" styleName="scoreLabel"/>
-        <mx:Label id="_timeLabel" styleName="timeLabel"/>
-    </mx:Canvas>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark"
+               skinClass="PlaygroundSkin" creationComplete="start();">
+    <fx:Style source="default.css"/>
+    <s:SkinnableContainer id="_playground" width="100%" height="100%">
+        <s:layout>
+            <s:BasicLayout clipAndEnableScrolling="true"/>
+        </s:layout>
+    </s:SkinnableContainer>
 
+    <s:Label id="_scoreLabel" styleName="scoreLabel"/>
+    <s:Label id="_timeLabel" styleName="timeLabel"/>
 
-    <mx:Script><![CDATA[
+    <fx:Script><![CDATA[
         import model.IDuck;
         import model.PlayModel;
         import model.ScoreChangeEvent;
 
-        import mx.containers.Box;
-
-        import mx.containers.VBox;
-
-        import mx.controls.Text;
-
         import mx.core.BitmapAsset;
-
         import mx.managers.CursorManagerPriority;
+
+        import spark.layouts.VerticalLayout;
 
         import view.DuckShape;
 
@@ -51,7 +50,7 @@
 
             _advanceTimer = new Timer(ADVANCE_DELAY);
             _advanceTimer.addEventListener(TimerEvent.TIMER, function(e: TimerEvent): void {
-                if (getTimeLeft() == 0) {
+                if (getTimeLeft() <= 0) {
                     gameOver();
                 }
                 _model.advanceAllDucks();
@@ -76,18 +75,25 @@
             _advanceTimer.stop();
             _newDuckTimer.stop();
 
-            var gameOverPanel: Box = new VBox();
+            var gameOverPanel: SkinnableContainer = new SkinnableContainer();
+            var layout: VerticalLayout = new VerticalLayout();
+            layout.verticalAlign = "middle";
+            layout.horizontalAlign = "center";
+            gameOverPanel.layout = layout;
             gameOverPanel.styleName = "gameOverPanel";
-            _playground.addChild(gameOverPanel);
+            gameOverPanel.addEventListener(MouseEvent.MOUSE_DOWN, function(e: MouseEvent):void {
+                e.stopPropagation();
+            });
+            addElement(gameOverPanel);
 
-            var label: Text = new Text();
+            var label: Label = new Label();
             label.text = "Game over!\nYour score: " + _model.score;
             label.styleName = "gameOverLabel";
-            gameOverPanel.addChild(label);
+            gameOverPanel.addElement(label);
         }
 
         private function miss(event: MouseEvent): void {
-            if (event.target == _playground) {
+            if (!(event.target is DuckShape)) {
                 _model.miss();
             }
         }
@@ -99,7 +105,7 @@
         private function newDuck(): void {
             var duck: IDuck = _model.createNewDuck();
             var shape: DuckShape = new DuckShape(duck);
-            _playground.addChild(shape);
+            _playground.addElement(shape);
         }
 
         /**
@@ -107,13 +113,13 @@
          */
         private function getTimeLeft(): int {
             var currentTime: Number = new Date().getTime();
-            return Math.abs((_startTime + PLAY_TIME - currentTime) / 1000);
+            return (_startTime + PLAY_TIME - currentTime) / 1000;
         }
 
         private function updateStatistics(): void {
             _scoreLabel.text = "Score: " + _model.score;
-            _timeLabel.text = "Time: " + getTimeLeft();
+            _timeLabel.text = "Time: " + Math.max(0, getTimeLeft());
         }
 
-        ]]></mx:Script>
-</mx:Application>
+        ]]></fx:Script>
+</s:Application>
