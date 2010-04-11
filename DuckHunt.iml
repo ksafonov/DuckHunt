@@ -14,7 +14,7 @@
       <sourceFolder url="file://$MODULE_DIR$/images" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" />
     </content>
-    <orderEntry type="jdk" jdkName="flex_sdk_3.4.0.9271 (player 9)" jdkType="Flex SDK Type" />
+    <orderEntry type="jdk" jdkName="flex_sdk_3.5.0.12683 (player 9)" jdkType="Flex SDK Type" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module-library">
       <library>
