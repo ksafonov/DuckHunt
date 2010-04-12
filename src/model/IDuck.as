@@ -14,7 +14,7 @@ public interface IDuck extends IEventDispatcher {
     function get currentImage(): BitmapAsset;
 
     /**
-     * @return current duck location relative to the top-left corner of the playground
+     * @return Current location relative to the top-left corner of the playground
      */
     function get location(): Point;
 
@@ -28,7 +28,7 @@ public interface IDuck extends IEventDispatcher {
     function set fliesToTheRight(p: Boolean): void;
 
     /**
-     * Perform the duck movement
+     * Advance the duck with time: move, check status, etc.
      */
     function advance(): void;
 

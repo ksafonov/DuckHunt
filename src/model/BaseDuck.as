@@ -4,6 +4,9 @@ import flash.geom.Point;
 
 import mx.core.BitmapAsset;
 
+/**
+ * Base implementation
+ */
 public class BaseDuck extends EventDispatcher implements IDuck {
 
     protected var _location: Point = new Point(0, 0);
@@ -27,6 +30,9 @@ public class BaseDuck extends EventDispatcher implements IDuck {
         return _hit ? _hitFrames.image : _aliveFrames.image;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function get location(): Point {
         return _location;
     }
@@ -35,6 +41,9 @@ public class BaseDuck extends EventDispatcher implements IDuck {
         _location = p.clone();
     }
 
+    /**
+     * @inheritDoc
+     */
     public function get fliesToTheRight(): Boolean {
         return _leftToRight;
     }
@@ -43,6 +52,9 @@ public class BaseDuck extends EventDispatcher implements IDuck {
         _leftToRight = p;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function advance(): void {
         if (dismissed) {
             return;
@@ -58,19 +70,33 @@ public class BaseDuck extends EventDispatcher implements IDuck {
         fireChanged(false);
     }
 
+    /**
+     * Perform the duck movement
+     * @param hit specifies is duck is hit or alive
+     * @return movement offset
+     */
     protected function move(hit: Boolean): Point {
         return new Point(0, 0);
     }
 
+    /**
+     * @inheritDoc
+     */
     public function hit(): void {
         _hit = true;
         fireChanged(true);
     }
 
+    /**
+     * @inheritDoc
+     */
     public function dismiss(): void {
         _dismissed = true;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function get dismissed(): Boolean {
         return _dismissed;
     }
@@ -79,6 +105,9 @@ public class BaseDuck extends EventDispatcher implements IDuck {
         dispatchEvent(new DuckChangeEvent(this, hitEvent));
     }
 
+    /**
+     * @inheritDoc
+     */
     public function get points(): int {
         return 0;
     }
