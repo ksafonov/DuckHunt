@@ -81,7 +81,7 @@
             layout.horizontalAlign = "center";
             gameOverPanel.layout = layout;
             gameOverPanel.styleName = "gameOverPanel";
-            gameOverPanel.addEventListener(MouseEvent.MOUSE_DOWN, function(e: MouseEvent):void {
+            gameOverPanel.addEventListener(MouseEvent.MOUSE_DOWN, function(e: MouseEvent): void {
                 e.stopPropagation();
             });
             addElement(gameOverPanel);
