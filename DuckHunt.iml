@@ -19,7 +19,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://C:/Programs/FlexUnit 4/FlexUnit4/bin/FlexUnit4.swc!/" />
+          <root url="jar://C:/Programs/FlexUnit4TurnkeyRC/libs/FlexUnit4.swc!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
