@@ -4,15 +4,12 @@ import flash.events.EventDispatcher;
 import flash.geom.Point;
 import flash.geom.Rectangle;
 
-import mx.collections.ArrayList;
-import mx.collections.IList;
-
 public class PlayModel extends EventDispatcher {
 
     private static const MISS_PENALTY:int = 1;
 
     private var _visibleAreaProviderDelegate:Function;
-    private var _ducks:IList = new ArrayList();
+    private var _ducks:Array = new Array();
     private var _score:int;
 
     public function PlayModel(visibleAreaProviderDelegate:Function) {
@@ -35,7 +32,7 @@ public class PlayModel extends EventDispatcher {
         duck.leftToRight = leftToRight;
 
         duck.location = new Point(leftToRight ? area.left : area.right, area.top + Math.random() * area.height);
-        _ducks.addItem(duck);
+        _ducks.push(duck);
         duck.addEventListener(DuckChangeEvent.NAME, duckChanged);
         return duck;
     }
@@ -54,12 +51,12 @@ public class PlayModel extends EventDispatcher {
         var duckBoundaries:Rectangle = new Rectangle(location.x, location.y, bitmapData.width, bitmapData.height);
         if (!visibleArea.intersects(duckBoundaries)) {
             event.duck.dismiss();
-            _ducks.removeItemAt(_ducks.getItemIndex(event.duck));
+            _ducks.splice(_ducks.indexOf(event.duck), 1);
         }
     }
 
     public function advanceAllDucks():void {
-        var stableCopy:Array = _ducks.toArray(); // since ducks list may change inside duck.advance()
+        var stableCopy:Array = new Array().concat(_ducks); // since ducks list may change inside duck.advance()
         for each (var duck:IDuck in stableCopy) {
             duck.advance();
         }
