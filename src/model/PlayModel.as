@@ -51,7 +51,7 @@ public class PlayModel extends EventDispatcher {
         var duckBoundaries: Rectangle = new Rectangle(location.x, location.y, bitmapData.width, bitmapData.height);
         if (!visibleArea.intersects(duckBoundaries)) {
             event.duck.dismiss();
-            _ducks.splice(_ducks.indexOf(event.duck), 1);
+            _ducks.splice(_ducks.indexOf(event.duck), 1); // remove the duck from the model
         }
     }
 

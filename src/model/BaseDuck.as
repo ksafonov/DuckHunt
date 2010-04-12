@@ -14,6 +14,10 @@ public class BaseDuck extends EventDispatcher implements IDuck {
     private var _aliveFrames: FrameList;
     private var _hitFrames: FrameList;
 
+    /**
+     * @param aliveFrames List of BitmapAsset-s to be shown for an <b>alive</b> duck
+     * @param hitFrames List of BitmapAsset-s to be shown for a duck that was <b>hit</b>
+     */
     public function BaseDuck(aliveFrames: Array, hitFrames: Array) {
         _aliveFrames = new FrameList(aliveFrames);
         _hitFrames = new FrameList(hitFrames);

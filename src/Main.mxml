@@ -109,7 +109,7 @@
         }
 
         /**
-         * @return the time left to play, in seconds
+         * @return The time left to play, in seconds
          */
         private function getTimeLeft(): int {
             var currentTime: Number = new Date().getTime();

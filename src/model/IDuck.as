@@ -9,7 +9,7 @@ import mx.core.BitmapAsset;
 public interface IDuck extends IEventDispatcher {
 
     /**
-     * @return an image to show for the duck currently
+     * @return An image to show for the duck currently
      */
     function get currentImage(): BitmapAsset;
 
@@ -21,19 +21,19 @@ public interface IDuck extends IEventDispatcher {
     function set location(p: Point): void;
 
     /**
-     * the duck flight direction
+     * Flight direction
      */
     function get leftToRight(): Boolean;
 
     function set leftToRight(p: Boolean): void;
 
     /**
-     * perform the duck movement
+     * Perform the duck movement
      */
     function advance(): void;
 
     /**
-     * update duck's state when it's hit
+     * Update duck's state when it's hit
      */
     function hit(): void;
 
@@ -43,12 +43,12 @@ public interface IDuck extends IEventDispatcher {
     function get dismissed(): Boolean;
 
     /**
-     * called when duck flew out of the screen
+     * Called when duck flew out of the screen
      */
     function dismiss(): void;
 
     /**
-     * @return points that user gets when hits this duck
+     * @return Points that user gets when hits this duck
      */
     function get points(): int;
 

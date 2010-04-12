@@ -31,11 +31,13 @@ public class DuckShape extends Group {
             // hide this shape
             (parent as IVisualElementContainer).removeElement(this);
         } else {
+            // move the shape
             var bitmapData: BitmapData = _duck.currentImage.bitmapData;
             _image.source = new Bitmap(bitmapData);
             x = _duck.location.x;
             y = _duck.location.y;
 
+            // flip the image if duck flies to the right
             var matrix: Matrix = _image.transform.matrix;
             matrix.a = _duck.leftToRight ? -1 : 1;
             matrix.tx = _duck.leftToRight ? bitmapData.width : 0;
