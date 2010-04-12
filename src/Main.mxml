@@ -23,22 +23,31 @@
 
         import view.DuckShape;
 
-        public static const ADVANCE_DELAY: int = 50; // ms
-        public static const NEW_DUCK_DELAY: int = 2000; // ms
-        public static const PLAY_TIME: int = 60 * 1000; // ms
+        private static const ADVANCE_DELAY: int = 50; // ms
+        private static const NEW_DUCK_DELAY: int = 2000; // ms
+        private static const RESTORE_CURSOR_DELAY: int = 100; // ms
+
+        private static const PLAY_TIME: int = 60 * 1000; // ms
 
         private var _model: PlayModel;
         private var _startTime: Number;
         private var _advanceTimer: Timer;
         private var _newDuckTimer: Timer;
 
+        // id of a temporary cursor shown on shot
+        private var _shotCursorId: int;
+
 
         [Embed(source="/cursor.png")]
-        private var cursorClass: Class;
+        private static var _cursorClass: Class;
+
+        [Embed(source="/cursor-fire.png")]
+        private static var _fireCursorClass: Class;
+
 
         private function creationComplete(): void {
-            var cursorAsset: BitmapAsset = new cursorClass();
-            cursorManager.setCursor(cursorClass, CursorManagerPriority.MEDIUM, -cursorAsset.width / 2, -cursorAsset.height / 2);
+            var cursorAsset: BitmapAsset = new _cursorClass();
+            cursorManager.setCursor(_cursorClass, CursorManagerPriority.MEDIUM, -cursorAsset.width / 2, -cursorAsset.height / 2);
 
             _model = new PlayModel(visibleAreaProvider);
 
@@ -46,7 +55,7 @@
                 updateStatistics();
             });
 
-            addEventListener(MouseEvent.MOUSE_DOWN, miss);
+            addEventListener(MouseEvent.MOUSE_DOWN, mouseDown);
 
             _advanceTimer = new Timer(ADVANCE_DELAY);
             _advanceTimer.addEventListener(TimerEvent.TIMER, function(e: TimerEvent): void {
@@ -92,7 +101,17 @@
             gameOverPanel.addElement(label);
         }
 
-        private function miss(event: MouseEvent): void {
+
+        private function mouseDown(event: MouseEvent): void {
+            var cursorAsset: BitmapAsset = new _cursorClass();
+            _shotCursorId = cursorManager.setCursor(_fireCursorClass, CursorManagerPriority.HIGH, -cursorAsset.width / 2, -cursorAsset.height / 2);
+            var restoreCursorTimer: Timer = new Timer(RESTORE_CURSOR_DELAY, 1);
+            restoreCursorTimer.addEventListener(TimerEvent.TIMER, function(e: TimerEvent): void {
+                cursorManager.removeCursor(_shotCursorId);
+            });
+            restoreCursorTimer.start();
+
+
             if (!(event.target is DuckShape)) {
                 _model.miss();
             }
