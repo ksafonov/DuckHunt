@@ -39,8 +39,8 @@ public class DuckShape extends Group {
 
             // flip the image if duck flies to the right
             var matrix: Matrix = _image.transform.matrix;
-            matrix.a = _duck.leftToRight ? -1 : 1;
-            matrix.tx = _duck.leftToRight ? bitmapData.width : 0;
+            matrix.a = _duck.fliesToTheRight ? -1 : 1;
+            matrix.tx = _duck.fliesToTheRight ? bitmapData.width : 0;
             _image.transform.matrix = matrix;
         }
     }

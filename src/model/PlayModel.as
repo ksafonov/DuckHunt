@@ -28,10 +28,10 @@ public class PlayModel extends EventDispatcher {
 
         var area: Rectangle = new Rectangle(-duckBitmapData.width + 1, -duckBitmapData.height / 2, visibleArea.width - 1 + duckBitmapData.width, visibleArea.height + duckBitmapData.height / 2);
 
-        var leftToRight: Boolean = Math.random() >= 0.5;
-        duck.leftToRight = leftToRight;
+        var toTheRight: Boolean = Math.random() >= 0.5;
+        duck.fliesToTheRight = toTheRight;
 
-        duck.location = new Point(leftToRight ? area.left : area.right, area.top + Math.random() * area.height);
+        duck.location = new Point(toTheRight ? area.left : area.right, area.top + Math.random() * area.height);
         _ducks.push(duck);
         duck.addEventListener(DuckChangeEvent.NAME, duckChanged);
         return duck;

@@ -35,11 +35,11 @@ public class BaseDuck extends EventDispatcher implements IDuck {
         _location = p.clone();
     }
 
-    public function get leftToRight(): Boolean {
+    public function get fliesToTheRight(): Boolean {
         return _leftToRight;
     }
 
-    public function set leftToRight(p: Boolean): void {
+    public function set fliesToTheRight(p: Boolean): void {
         _leftToRight = p;
     }
 

@@ -23,9 +23,9 @@ public interface IDuck extends IEventDispatcher {
     /**
      * Flight direction
      */
-    function get leftToRight(): Boolean;
+    function get fliesToTheRight(): Boolean;
 
-    function set leftToRight(p: Boolean): void;
+    function set fliesToTheRight(p: Boolean): void;
 
     /**
      * Perform the duck movement
