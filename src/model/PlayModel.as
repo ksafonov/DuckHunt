@@ -26,7 +26,7 @@ public class PlayModel extends EventDispatcher {
         // visible area extended by duck's size to the left and top
         var duckBitmapData: BitmapData = duck.currentImage.bitmapData;
 
-        var area: Rectangle = new Rectangle(-duckBitmapData.width + 1, -duckBitmapData.height / 2, visibleArea.width - 1 + duckBitmapData.width, visibleArea.height + duckBitmapData.height / 2);
+        var area: Rectangle = new Rectangle(-duckBitmapData.width + 1, 0, visibleArea.width - 1 + duckBitmapData.width, visibleArea.height);
 
         var toTheRight: Boolean = Math.random() >= 0.5;
         duck.fliesToTheRight = toTheRight;

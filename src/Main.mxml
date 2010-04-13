@@ -24,7 +24,7 @@
         import view.DuckShape;
 
         private static const ADVANCE_DELAY: int = 50; // ms
-        private static const NEW_DUCK_DELAY: int = 2000; // ms
+        private static const NEW_DUCK_DELAY: int = 1500; // ms
         private static const RESTORE_CURSOR_DELAY: int = 100; // ms
 
         private static const PLAY_TIME: int = 60 * 1000; // ms
