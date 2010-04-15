@@ -5,13 +5,13 @@ import model.BaseDuck;
 
 public class LazyDuck extends BaseDuck {
 
-    public static const FLY_SPEED: int = 10; // pixels per frame
+    private static const FLY_SPEED: int = 10; // pixels per frame
 
-    public static const PERIOD: int = 50; // frames
+    private static const PERIOD: int = 50; // frames
 
-    public static const AMPLITUDE: int = 10; // pixels
+    private static const AMPLITUDE: int = 10; // pixels
 
-    public static const FALL_SPEED: int = 30; // pixels per frame
+    private static const FALL_SPEED: int = 30; // pixels per frame
 
     [Embed(source="/lazyDuck/alive1.png")]
     private var imgClsAlive1: Class;
@@ -36,12 +36,16 @@ public class LazyDuck extends BaseDuck {
         _counter++;
     }
 
+    private static function moveBySinusoid(leftToRight: Boolean, frameCount: int): Point {
+        var verticalOffset: int = AMPLITUDE * (Math.cos(frameCount * PERIOD / 2 / Math.PI));
+        return new Point(leftToRight ? FLY_SPEED : -FLY_SPEED, verticalOffset);
+    }
+
     override protected function move(hit: Boolean): Point {
         if (_hit) {
             return new Point(0, FALL_SPEED);
         } else {
-            var verticalOffset: int = AMPLITUDE * (Math.cos(_counter * PERIOD / 2 / Math.PI));
-            return new Point(_leftToRight ? FLY_SPEED : -FLY_SPEED, verticalOffset);
+            return moveBySinusoid(fliesToTheRight, _counter);
         }
     }
 
