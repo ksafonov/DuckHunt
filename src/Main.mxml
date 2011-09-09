@@ -8,8 +8,24 @@
         </s:layout>
     </s:SkinnableContainer>
 
+    <s:SkinnableContainer id="_gameOverPanel" styleName="gameOverPanel" width="100%" height="100%" includeIn="gameover"
+                          mouseDown="event.stopPropagation()">
+        <s:layout>
+            <s:VerticalLayout gap="10" verticalAlign="middle" horizontalAlign="center"/>
+        </s:layout>
+        <s:Label lineBreak="explicit" styleName="gameOverLabel">
+            <s:text>{"Game over!\nYour score: " + _model.score}</s:text>
+        </s:Label>
+        <s:Button id="restartButton" styleName="restartButton" label="Start again!" click="restart();"/>
+    </s:SkinnableContainer>
+
     <s:Label id="_scoreLabel" styleName="scoreLabel"/>
     <s:Label id="_timeLabel" styleName="timeLabel"/>
+
+    <s:states>
+        <s:State name="play"/>
+        <s:State name="gameover"/>
+    </s:states>
 
     <fx:Script><![CDATA[
         import model.IDuck;
@@ -18,8 +34,6 @@
 
         import mx.core.BitmapAsset;
         import mx.managers.CursorManagerPriority;
-
-        import spark.layouts.VerticalLayout;
 
         import view.DuckShape;
 
@@ -48,6 +62,8 @@
         // id of a temporary cursor shown on shot
         private var _shotCursorId: int;
 
+        // id of a sight cursor shown during the game
+        private var _sightCursorId: int;
 
         [Embed(source="/cursor.png")]
         private static var _cursorClass: Class;
@@ -56,17 +72,21 @@
         private static var _fireCursorClass: Class;
 
 
+        private var _sightCursorAsset: BitmapAsset = new _cursorClass();
+
         private function creationComplete(): void {
-            var cursorAsset: BitmapAsset = new _cursorClass();
-            cursorManager.setCursor(_cursorClass, CursorManagerPriority.MEDIUM, -cursorAsset.width / 2, -cursorAsset.height / 2);
+            addEventListener(MouseEvent.MOUSE_DOWN, mouseDown);
+            startGame();
+        }
+
+        private function startGame(): void {
+            _sightCursorId = cursorManager.setCursor(_cursorClass, CursorManagerPriority.MEDIUM, -_sightCursorAsset.width / 2, -_sightCursorAsset.height / 2);
 
             _model = new PlayModel(visibleAreaProvider);
 
             _model.addEventListener(ScoreChangeEvent.NAME, function(event: ScoreChangeEvent): void {
                 updateStatistics();
             });
-
-            addEventListener(MouseEvent.MOUSE_DOWN, mouseDown);
 
             _advanceTimer = new Timer(ADVANCE_DELAY);
             _advanceTimer.addEventListener(TimerEvent.TIMER, function(e: TimerEvent): void {
@@ -83,6 +103,7 @@
             });
 
             updateStatistics();
+            setCurrentState("play");
 
             newDuck();
             _advanceTimer.start();
@@ -94,22 +115,8 @@
         private function gameOver(): void {
             _advanceTimer.stop();
             _newDuckTimer.stop();
-
-            var gameOverPanel: SkinnableContainer = new SkinnableContainer();
-            var layout: VerticalLayout = new VerticalLayout();
-            layout.verticalAlign = "middle";
-            layout.horizontalAlign = "center";
-            gameOverPanel.layout = layout;
-            gameOverPanel.styleName = "gameOverPanel";
-            gameOverPanel.addEventListener(MouseEvent.MOUSE_DOWN, function(e: MouseEvent): void {
-                e.stopPropagation();
-            });
-            addElement(gameOverPanel);
-
-            var label: Label = new Label();
-            label.text = "Game over!\nYour score: " + _model.score;
-            label.styleName = "gameOverLabel";
-            gameOverPanel.addElement(label);
+            cursorManager.removeCursor(_sightCursorId);
+            setCurrentState("gameover");
         }
 
 
@@ -151,5 +158,9 @@
             _timeLabel.text = "Time: " + Math.max(0, getTimeLeft());
         }
 
+        private function restart(): void {
+            _playground.removeAllElements();
+            startGame();
+        }
         ]]></fx:Script>
 </s:Application>

@@ -27,5 +27,10 @@
 .gameOverLabel {
     fontWeight: bold;
     fontFamily: Arial;
-    fontSize: 30;
+    fontSize: 20;
+}
+
+.restartButton {
+    fontFamily: Arial;
+    fontSize: 20;
 }
